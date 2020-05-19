@@ -151,9 +151,7 @@ function countdown() {
 function timeToSeconds(timeArray) {
 
   var minutes = timeArray[0] * 1;
-
   var seconds = (minutes * 60) + (timeArray[1] * 1);
-
   return seconds;
 
 }
@@ -163,17 +161,11 @@ function timeToSeconds(timeArray) {
 function secondsToTime(secs) {
 
   var divisor_for_minutes = secs % (60 * 60);
-
   var minutes = Math.floor(divisor_for_minutes / 60);
-
   minutes = minutes < 10 ? '0' + minutes : minutes;
-
   var divisor_for_seconds = divisor_for_minutes % 60;
-
   var seconds = Math.ceil(divisor_for_seconds);
-
   seconds = seconds < 10 ? '0' + seconds : seconds;
-
   return minutes + ':' + seconds;
 
 }
