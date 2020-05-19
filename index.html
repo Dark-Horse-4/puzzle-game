@@ -3,56 +3,106 @@
   <head>
     <title>Puzzle game</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="jquery-ui.min.css">
+<script src="external/jquery/jquery.js"></script>
+    
   </head>
 
-  <body onkeydown="keyPressed(event)">
+  <body>
+
     <div class="nav">
-      <div class="logo">
-        <img src="./assets/images/data/001-009.png"/>
-      </div>
-      <div class="user">
-        <img src="./assets/images/data/001-015.png">
-      </div>
+      <div class="nav-flex">
+        <div class="logo">
+          <img src="./assets/images/data/001-009.png"/>
+        </div>
+        <div class="user">
+          <img src="./assets/images/data/001-015.png">
+        </div>
+      </div>>
     </div>
 
+    <div class="options">
+      <div><img class="" src="./assets/images/data/001-018.png"/></div>
+      <div><img class="gift" src="./assets/images/data/001-010.png"/></div>
+    </div>
 
-    <div class="content">
-      <div class="options">
-        <div><img class="" src="./assets/images/data/001-018.png"/></div>
-        <div><img class="gift" src="./assets/images/data/001-010.png"/></div>
-      </div>
-   <div class="inner">
-      </div>
+    <div class="game">
+        <div class="topic">Puzzle 2D</div>
+        <div class="countSection">
+          <div id="clock">Time ends in</div>&nbsp;&nbsp;
+          <div id="countdown">00:30</div>
+        </div>
         <div class="blue-box">
-          <div class="">
-            <div><img class="points" src="./assets/images/data/001-000.png"/></div>
-            <div><img class="info" src="./assets/images/data/001-001.png"/></div>
-            <table class="puzzle">
-              <tr>
-              <td></td><td></td><td></td><td></td>
-              </tr>
-              <tr>
-              <td></td><td></td><td></td><td></td>
-              </tr>
-              <tr>
-              <td></td><td></td><td></td><td></td>
-              </tr>
-              <tr>
-              <td></td><td></td><td></td><td></td>
-              </tr>
-              </table>
+          <div><img class="points" src="./assets/images/data/001-000.png"/></div>
+          <div><img class="info" src="./assets/images/data/001-001.png"/></div>
+          <div class="puzzle">
+            <div id="puzzleWrapper">
+
+    
+              <section>
+                  <div class="contentWrapper">
+                      <div class="puzzleSection">
+          
+                          <div id="image"></div>
+          
+                          <a href="#" id="start">Click to start</a>
+          
+                      </div>
+                  </div>
+          
+              </section>
+          
+              <section>
+          
+                 
+          
+              </section>
+          
+              <section>
+          
+                  <div class="lbWrapper">
+          
+                      <div class="failWrapper">
+          
+                          <div class="failTilte">Sorry !!! Better luck next time</div>
+          
+                          <div class="tryAgain"><a href="#">click here to try once more.</a></div>
+          
+                      </div>
+          
+                      <div class="successWrapper">
+          
+                          <div class="successTilte">Congrats !!!</div>
+          
+                          <div class="successMsg"></div>
+          
+                          <div class="tryAgain"><a href="#">click here to try once more.</a></div>
+          
+                      </div>
+          
+                  </div>
+          
+              </section>
+          
+              
+          
+          </div>
+          
           </div>
         </div>
-     </div>
+    </div>
     
     
     <div class="bottom-nav">
-      <div class="desc"><img src="./assets/images/data/001-011.png"/></div>
-      <div class="title"><img src="./assets/images/data/001-012.png"/></div>
-      <div class="intel"><img src="./assets/images/data/001-013.png"/></div>
-      
+      <div class="footer-flex">
+        <div class="desc"><img src="./assets/images/data/001-011.png"/></div>
+        <div class="title"><img src="./assets/images/data/001-012.png"/></div>
+        <div class="intel"><img src="./assets/images/data/001-013.png"/></div>
+      </div>
     </div>
-
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="jquery-ui.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script>
     <script src="script.js"></script>
   </body>
 </html>

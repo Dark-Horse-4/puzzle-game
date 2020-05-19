@@ -1,91 +1,242 @@
-var g = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
-var l = [];
-var time = 0;
-var n = 0;
-
-do {
-	ri = Math.floor(Math.random()*(g.length));
-	r = g[ri];
-
-	if(r!=-1) {
-		l.push(r);
-		g[ri] = -1;
-		n+=1;
-	}
-
-} while(n<16);
+$(document).ready(function () {
 
 
-function drawPuzzle() {
-	for(i=0;i<16;i++) {
-		document.getElementsByTagName('td')[i].innerHTML = '<img src="./assets/images/data/cut/'+l[i]+'.png"/>';
+  $("#start").on("click", function () {
+
+     startGame();
+
+  });
+
+});
+
+
+function startGame() {
+
+  moves = 0;
+
+  window.moves = 0;
+
+  var classNameArray = ["sq1", "sq2", "sq3", "sq4", "sq5", "sq6", "sq7", "sq8", "sq9", "sq10", "sq11", "sq12", "sq13", "sq14", "sq15", "sq16"];
+  
+  var arrayToCompare = [];
+  
+  // Images in a array
+
+  var arr = new Array(14, 2, 10, 6, 12, 13, 9, 7, 15, 8, 5, 11, 4, 1, 3, 16);
+
+  arr = Shuffle(arr);
+
+  for (i = 0; i < arr.length; i++) {
+
+      $("#image").append('<div id="pos' + (i + 1) + '" class="sq' + arr[i] + '"></div>');
+
   }
-  if(time >= 30){
-    window.alert("timeout")
-  }else{
-    chkWin();
+
+  var bg = $(".puzzleSection #image").css('background-image').replace(/^url|[\(\)]/g, '');
+
+  $(".puzzleSection #image div").css('background-image', 'url(' + bg + ')');
+
+  $(".puzzleSection #image").css('background-image', 'none');
+
+  $("#counter span").html("0");
+
+  countdown();
+
+  //movePiece();
+
+  $("#image").sortable({
+      delay: 200,
+      stop: function (event, ui) {
+          window.moves++;
+          $("#counter span").html(window.moves);
+          arrayToCompare = [];
+          jQuery("#image div").each(function () {
+              arrayToCompare.push(jQuery(this).attr("class"));
+          });
+          var is_same = (classNameArray.length == arrayToCompare.length) && classNameArray.every(function(element, index) {
+                      return element === arrayToCompare[index]; 
+          });
+          console.log(is_same);
+          if(is_same == true){
+               gameOver();       
+          }
+      }
+  });
+
+}
+
+//Shuffle Image
+
+function Shuffle(o) {
+
+  for (var j, x, i = o.length; i; j = parseInt(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+
+  return o;
+
+};
+
+// Work out if game is over
+
+function gameOver() {
+
+              var counterVal, timeVal, winTime;
+
+              counterVal = $("#counter span").text();
+
+              timeVal = document.getElementById('countdown').innerHTML;
+
+              winTime = balanceTime(timeVal);
+
+              $(".successMsg").text("You completed the game with " + counterVal + " moves and in " + winTime)
+
+              $(".tryAgain a").click(function () {
+
+                  location.reload();
+
+              });
+
+}
+
+
+//Timer
+
+var seconds;
+
+var temp;
+
+
+
+function countdown() {
+
+  time = document.getElementById('countdown').innerHTML;
+
+  timeArray = time.split(':')
+
+  seconds = timeToSeconds(timeArray);
+
+  if (seconds == '') {
+
+      temp = document.getElementById('countdown');
+
+      temp.innerHTML = "00:00";
+
+      $(".lbWrapper,.lbWrapper .failWrapper").show();
+
+      $(".tryAgain a").click(function () {
+
+          location.reload();
+
+      });
+
+      return;
   }
+
+  seconds--;
+
+  temp = document.getElementById('countdown');
+
+  temp.innerHTML = secondsToTime(seconds);
+
+  if ($(".lbWrapper .successWrapper").is(":visible")) {
+      return;
+  } else {
+      timeoutMyOswego = setTimeout(countdown, 1000);
+  }
+
+
 }
 
 
-function keyPressed(e) {
-	k = e.keyCode;
-	if(k==38) {mvUp();}
-	if(k==40) {mvDown();}
-	if(k==37) {mvLeft();}
-	if(k==39) {mvRight();}
+
+function timeToSeconds(timeArray) {
+
+  var minutes = timeArray[0] * 1;
+
+  var seconds = (minutes * 60) + (timeArray[1] * 1);
+
+  return seconds;
+
 }
 
-function mvDown() {
-	if(l.indexOf(0)>4) {
-		i = l.indexOf(0);
-		j = i - 4;
-		t = l[i];
-		l[i] = l[j];
-		l[j] = t;
-		drawPuzzle();
-	}
-}
-function mvUp() {
-	if(l.indexOf(0)<12) {
-		i = l.indexOf(0);
-		j = i + 4;
-		t = l[i];
-		l[i] = l[j];
-		l[j] = t;
-		drawPuzzle();
-	}
-}
-function mvRight() {
-	i = l.indexOf(0);
-	if(!(i==0 || i==4 || i==8 || i==12)) {
-		j = i - 1;
-		t = l[i];
-		l[i] = l[j];
-		l[j] = t;
-		drawPuzzle();
-	}
-}
-function mvLeft() {
-	i = l.indexOf(0);
-	if(!(i==3 || i==7 || i==11 || i==15)) {
-		j = i + 1;
-		t = l[i];
-		l[i] = l[j];
-		l[j] = t;
-		drawPuzzle();
-	}
+
+
+function secondsToTime(secs) {
+
+  var divisor_for_minutes = secs % (60 * 60);
+
+  var minutes = Math.floor(divisor_for_minutes / 60);
+
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+
+  var divisor_for_seconds = divisor_for_minutes % 60;
+
+  var seconds = Math.ceil(divisor_for_seconds);
+
+  seconds = seconds < 10 ? '0' + seconds : seconds;
+
+  return minutes + ':' + seconds;
+
 }
 
-function incre(){
-  time += 1
+
+
+//Imgae Select
+
+function imageSelect() {
+
+  $(".imgSelectionWrapper div").live('click', function () {
+
+      var bg = $(this).css('background-image').replace(/^url|[\(\)]/g, '');
+
+      $(".puzzleSection #image").css('background-image', 'url(' + bg + ')');
+
+      $(".previewSection #image").css('background-image', 'url(' + bg + ')');
+
+  });
+
+
+
 }
-function chkWin() {
-	var a = 1;
-	for(i=0;i<14;i++) {
-		if(l[i]!=i+1) {a = 0;}
-	}
-	if(a==1) {alert('You Won !');}
+
+//Balance Time
+
+function balanceTime(time) {
+  var seconds1, seconds2, winSeconds, winTime;
+  var time1 = time;
+  timeArray1 = time1.split(':');
+  timeArray2 = [05, 00];
+  seconds1 = timeToSeconds(timeArray1);
+  seconds2 = timeToSeconds(timeArray2);
+  winSeconds = seconds2 - seconds1;
+  winTime = secondsToTime(winSeconds);
+  return winTime;
+
+  function timeToSeconds(timeArray) {
+
+      var minutes = timeArray[0] * 1;
+
+      var seconds = (minutes * 60) + (timeArray[1] * 1);
+
+      return seconds;
+
+  }
+
+  function secondsToTime(secs) {
+
+      var divisor_for_minutes = secs % (60 * 60);
+
+      var minutes = Math.floor(divisor_for_minutes / 60);
+
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+
+      var divisor_for_seconds = divisor_for_minutes % 60;
+
+      var seconds = Math.ceil(divisor_for_seconds);
+
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      return minutes + ':' + seconds;
+
+  }
+
 }
-drawPuzzle()
-setTimeout(incre(),1000)
